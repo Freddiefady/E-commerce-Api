@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\StatusOrder;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -78,7 +77,18 @@ final class User extends Authenticatable implements JWTSubject
 
     public function getOrCreateCart(): Cart
     {
-        return $this->cart ?? $this->cart()->create();
+        if (! $this->relationLoaded('cart')) {
+            $this->load('cart');
+        }
+
+        if (! $this->cart) {
+            $cart = $this->cart()->create();
+            $this->setRelation('cart', $cart);
+
+            return $cart;
+        }
+
+        return $this->cart;
     }
 
     /**
@@ -88,7 +98,6 @@ final class User extends Authenticatable implements JWTSubject
     {
         return [
             'password' => 'hashed',
-            'status' => StatusOrder::class,
         ];
     }
 }
