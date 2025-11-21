@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\StatusOrder;
+use App\Enums\StatusProduct;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -88,7 +88,7 @@ final class Product extends Model
     protected function casts(): array
     {
         return [
-            'status' => StatusOrder::class,
+            'status' => StatusProduct::class,
             'price' => 'decimal:2',
             'available_for' => 'date',
         ];
