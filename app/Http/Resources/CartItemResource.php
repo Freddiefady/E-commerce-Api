@@ -21,11 +21,15 @@ final class CartItemResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'product_name' => $this->whenLoaded('product', fn () => $this->product->name),
-            'price' => $this->whenLoaded('product', fn () => $this->product->price),
             'quantity' => $this->quantity,
             'subtotal' => $this->getSubtotal(),
-            'stock_status' => $this->whenLoaded('product', fn () => $this->product->stock_status),
+            'product' => $this->whenLoaded('product', fn (): array => [
+                'id' => $this->product->id,
+                'name' => $this->product->name,
+                'price' => $this->product->price,
+                'stock_status' => $this->product->stock_status,
+                'available_in_stock' => $this->product->available_in_stock,
+            ]),
         ];
     }
 }
