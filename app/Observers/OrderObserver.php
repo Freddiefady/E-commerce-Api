@@ -14,7 +14,6 @@ final class OrderObserver
     public function creating(Order $order): void
     {
         $order->order_number = 'ORD-'.mb_strtoupper(uniqid()).'-'.now()->format('Ymd');
-        $order->save();
     }
 
     /**
